@@ -44,6 +44,12 @@ jobs:
       - name: Download ncnn prebuilt package
         run: gh release download 20220420 -p "*-ubuntu-2004.zip" -R tencent/ncnn
       
+      - name: Extract and Intall ncnn prebuilt package
+        run: |
+          pwd
+          ls -al
+          unzip ncnn-20220420-ubuntu-2004.zip
+      
 
 #       - uses: dsaltares/fetch-gh-release-asset@master
 #         with:
