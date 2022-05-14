@@ -1,10 +1,6 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
   pull_request:
@@ -16,23 +12,12 @@ on:
 env:
   ncnn_tag: 20220420
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    
-      - name: cancel-previous-runs
-        uses: styfle/cancel-workflow-action@0.9.1
-        with:
-          access_token: ${{ secrets.GITHUB_TOKEN }}
-    
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - name: Clone repo
+        uses: actions/checkout@v3
       
       - name: List environment variables
         run: env
@@ -40,7 +25,6 @@ jobs:
       - name: Print GH CLI version and grant auth
         run: |
           gh --version
-          #gh auth login --with-token ${{ secrets.GITHUB_TOKEN }}
           echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
         
       - name: Download ncnn prebuilt package
@@ -53,18 +37,9 @@ jobs:
           ncnn_tarball_head=ncnn-${ncnn_tag}-ubuntu-2004
           ncnn_tarball_basename=${ncnn_tarball_head}.zip
           ncnn_install_dir=$GITHUB_WORKSPACE/artifacts/ncnn
-          #echo "!! ncnn_install_dir is: ${ncnn_install_dir}"
           mkdir -p ${ncnn_install_dir}
           unzip ${ncnn_tarball_basename} -d ${ncnn_install_dir}
-          #tree -L 2 $ncnn_install_PATH
-          #echo "!! HOME is $HOME"
-          #echo "!! GITHUB_WORKSPACE is $GITHUB_WORKSPACE"
-          #echo "!! ARTIFACTS_DIR is $ARTIFACTS_DIR"
-          #tree -L 2 $ARTIFACTS_DIR
-          # Turn off NCNN_VULKAN, but will cause other failure
-          #sed -i 's/NCNN_VULKAN ON/NCNN_VULKAN OFF/g' ${ncnn_install_dir}/${ncnn_tarball_head}/lib/cmake/ncnn/ncnnConfig.cmake
-          #sed -i 's/;Vulkan::Vulkan;\\$<LINK_ONLY:glslang>;\\$<LINK_ONLY:SPIRV>//g' ${ncnn_install_dir}/${ncnn_tarball_head}/lib/cmake/ncnn/ncnn.cmake
-    
+          
       - name: Install Vulkan SDK
         if: steps.cache-vulkan.outputs.cache-hit != 'true'
         run:
@@ -73,13 +48,12 @@ jobs:
       - name: Setup Ninja
         uses: seanmiddleditch/gha-setup-ninja@v3
      
-      - name: cmake configure
-        run: cmake -GNinja -DCMAKE_BUILD_TYPE=Release . -B build -DNCNN_VULKAN=OFF
+      - name: CMake configure
+        run: cmake -GNinja -DCMAKE_BUILD_TYPE=Release . -B build
 
-      - name: cmake build
+      - name: CMake build
         run: cmake --build build
         
-      - name: run test
-        #if: matrix.os != 'windows-latest'
+      - name: Run test
         run: ./testbed
         working-directory: build
