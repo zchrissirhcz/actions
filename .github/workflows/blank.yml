@@ -15,7 +15,6 @@ on:
 
 env:
   ncnn_tag: 20220420
-  ncnn_install_PATH: $GITHUB_WORKSPACE/artifacts/ncnn
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -45,9 +44,10 @@ jobs:
         run: |
           pwd
           ls -al
-          echo "!! ncnn_install_PATH is: ${ncnn_install_PATH}"
-          mkdir -p ${ncnn_install_PATH}
-          unzip ncnn-${ncnn_tag}-ubuntu-2004.zip -d $ncnn_install_PATH
+          ncnn_install_dir=$GITHUB_WORKSPACE/artifacts/ncnn
+          echo "!! ncnn_install_dir is: ${ncnn_install_dir}"
+          mkdir -p ${ncnn_install_dir}
+          unzip ncnn-${ncnn_tag}-ubuntu-2004.zip -d $ncnn_install_dir
           tree -L 2 $ncnn_install_PATH
           echo "!! HOME is $HOME"
           echo "!! GITHUB_WORKSPACE is $GITHUB_WORKSPACE"
