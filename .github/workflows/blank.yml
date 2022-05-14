@@ -56,15 +56,15 @@ jobs:
           #echo "!! ARTIFACTS_DIR is $ARTIFACTS_DIR"
           #tree -L 2 $ARTIFACTS_DIR
           # Turn off NCNN_VULKAN, but will cause other failure
-          sed -i 's/NCNN_VULKAN ON/NCNN_VULKAN OFF/g' ${ncnn_install_dir}/${ncnn_tarball_head}/lib/cmake/ncnn/ncnnConfig.cmake
-          sed -i 's/;Vulkan::Vulkan;\\$<LINK_ONLY:glslang>;\\$<LINK_ONLY:SPIRV>//g' ${ncnn_install_dir}/${ncnn_tarball_head}/lib/cmake/ncnn/ncnn.cmake
+          #sed -i 's/NCNN_VULKAN ON/NCNN_VULKAN OFF/g' ${ncnn_install_dir}/${ncnn_tarball_head}/lib/cmake/ncnn/ncnnConfig.cmake
+          #sed -i 's/;Vulkan::Vulkan;\\$<LINK_ONLY:glslang>;\\$<LINK_ONLY:SPIRV>//g' ${ncnn_install_dir}/${ncnn_tarball_head}/lib/cmake/ncnn/ncnn.cmake
       
 #       - name: Install Vulkan SDK
 #         run:
 #           sudo apt install libvulkan1-dev -y
       
       - name: cmake configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release . -B build
+        run: cmake -DCMAKE_BUILD_TYPE=Release . -B build -DNCNN_VULKAN=OFF
 
       - name: cmake build
         run: cmake --build build
