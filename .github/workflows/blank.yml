@@ -16,7 +16,7 @@ on:
 env:
   ncnn_tag: 20220420
   # ncnn_install_root: $GITHUB_WORKSPACE/artifacts/ncnn
-  ncnn_install_root: $HOME/artifacts/ncnn/${ncnn_tag}
+  ncnn_install_root: ${{ env.HOME }}/artifacts/ncnn/${{ env.ncnn_tag }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
