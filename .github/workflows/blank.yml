@@ -63,15 +63,16 @@ jobs:
         run:
           sudo apt-get update && sudo apt-get install -y libvulkan-dev vulkan-utils
      
+      - name: Setup Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v3
+     
       - name: cmake configure
-        run: cmake -DCMAKE_BUILD_TYPE=Release . -B build -DNCNN_VULKAN=OFF
+        run: cmake -GNinja -DCMAKE_BUILD_TYPE=Release . -B build -DNCNN_VULKAN=OFF
 
       - name: cmake build
         run: cmake --build build
-
-#       - uses: dsaltares/fetch-gh-release-asset@master
-#         with:
-#           repo: 'tencent/ncnn'
-#           version: 'tags/20220420'
-#           file: 'ncnn-20220420-ubuntu-2004.zip'
-#           token: ${{ secrets.GITHUB_TOKEN }}
+        
+      - name: run test
+        #if: matrix.os != 'windows-latest'
+        run: ./testbed
+        working-directory: build
