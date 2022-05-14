@@ -60,6 +60,11 @@ jobs:
           unzip ncnn-${ncnn_tag}-ubuntu-2004.zip -d $ncnn_install_root
           tree -L 2 $ncnn_install_root
       
+      - name: cmake configure
+        run: cmake -DCMAKE_BUILD_TYPE=Release . -B build
+
+      - name: cmake build
+        run: cmake --build build
 
 #       - uses: dsaltares/fetch-gh-release-asset@master
 #         with:
