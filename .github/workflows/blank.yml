@@ -60,6 +60,10 @@ jobs:
           mkdir -p ${ncnn_install_PATH}
           unzip ncnn-${ncnn_tag}-ubuntu-2004.zip -d $ncnn_install_PATH
           tree -L 2 $ncnn_install_PATH
+          echo "!! HOME is $HOME"
+          echo "!! GITHUB_WORKSPACE is $GITHUB_WORKSPACE/artifacts"
+          tree -L 2 $HOME/artifacts
+          tree -L 2 /home/runner/artifacts
       
       - name: cmake configure
         run: cmake -DCMAKE_BUILD_TYPE=Release . -B build
