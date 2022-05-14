@@ -13,6 +13,7 @@ if(DEFINED ENV{GITHUB_ACTIONS} AND DEFINED ENV{GITHUB_WORKSPACE})
   message(STATUS ">>> ENV{GITHUB_WORKSPACE} is: $ENV{GITHUB_WORKSPACE}")
   message(STATUS ">>> ARTIFACTS_DIR is: ${ARTIFACTS_DIR}")
   message(STATUS ">>> ncnn_DIR is: ${ncnn_DIR}")
+  set(NCNN_VULKAN OFF)
   find_package(ncnn REQUIRED)
 endif()
 
