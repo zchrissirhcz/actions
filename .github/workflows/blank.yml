@@ -50,14 +50,15 @@ jobs:
           echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
         
       - name: Download ncnn prebuilt package
-        run: gh release download $ncnn_tag -p "*-ubuntu-2004.zip" -R tencent/ncnn
+        run: gh release download ${ncnn_tag} -p "*-ubuntu-2004.zip" -R tencent/ncnn
       
       - name: Extract and Intall ncnn prebuilt package
         run: |
           pwd
           ls -al
-          mkdir -p $ncnn_install_root
-          unzip ncnn-$ncnn_tag-ubuntu-2004.zip -d $ncnn_install_root
+          echo "!! ncnn_install_root is: ${ncnn_install_root}"
+          mkdir -p ${ncnn_install_root}
+          unzip ncnn-${ncnn_tag}-ubuntu-2004.zip -d $ncnn_install_root
           tree -L 2 $ncnn_install_root
       
       - name: cmake configure
