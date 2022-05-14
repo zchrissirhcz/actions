@@ -64,19 +64,11 @@ jobs:
           # Turn off NCNN_VULKAN, but will cause other failure
           #sed -i 's/NCNN_VULKAN ON/NCNN_VULKAN OFF/g' ${ncnn_install_dir}/${ncnn_tarball_head}/lib/cmake/ncnn/ncnnConfig.cmake
           #sed -i 's/;Vulkan::Vulkan;\\$<LINK_ONLY:glslang>;\\$<LINK_ONLY:SPIRV>//g' ${ncnn_install_dir}/${ncnn_tarball_head}/lib/cmake/ncnn/ncnn.cmake
-      
-      - uses: airvzxf/cache-anything-new-action@v1.0.1
-        with:
-          script: 'install.sh'
-          is_cached: ${{ steps.cache-id.outputs.cache-hit }}
-          cache: ${{ runner.temp }}/cache-directory-example
-          snapshot: '/'
-          exclude: '/boot /data /dev /mnt /proc /run /sys'
     
-#       - name: Install Vulkan SDK
-#         if: steps.cache-vulkan.outputs.cache-hit != 'true'
-#         run:
-#           sudo apt-get update && sudo apt-get install -y libvulkan-dev vulkan-utils
+      - name: Install Vulkan SDK
+        if: steps.cache-vulkan.outputs.cache-hit != 'true'
+        run:
+          sudo apt-get update && sudo apt-get install -y libvulkan-dev vulkan-utils
      
       - name: Setup Ninja
         uses: seanmiddleditch/gha-setup-ninja@v3
