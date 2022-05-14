@@ -15,6 +15,8 @@ on:
 
 env:
   ncnn_tag: 20220420
+  # ncnn_install_root: $GITHUB_WORKSPACE/artifacts/ncnn
+  ncnn_install_root: $HOME/artifacts/ncnn/${ncnn_tag}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -38,8 +40,8 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
       
-      - name: List environment variables
-        run: env
+#       - name: List environment variables
+#         run: env
       
       - name: Print GH CLI version and grant auth
         run: |
@@ -48,13 +50,12 @@ jobs:
           echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
         
       - name: Download ncnn prebuilt package
-        run: gh release download ${{ env.ncnn_tag }} -p "*-ubuntu-2004.zip" -R tencent/ncnn
+        run: gh release download ${ncnn_tag} -p "*-ubuntu-2004.zip" -R tencent/ncnn
       
       - name: Extract and Intall ncnn prebuilt package
         run: |
           pwd
           ls -al
-          ncnn_install_root=$GITHUB_WORKSPACE/artifacts/ncnn
           mkdir -p $ncnn_install_root
           unzip ncnn-${ncnn_tag}-ubuntu-2004.zip -d $ncnn_install_root
           tree -L 2 $ncnn_install_root
