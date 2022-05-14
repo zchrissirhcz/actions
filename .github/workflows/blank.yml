@@ -15,7 +15,7 @@ on:
 
 env:
   ncnn_tag: 20220420
-  ncnn_install_root: $GITHUB_WORKSPACE/artifacts/ncnn
+  ncnn_install_PATH: $GITHUB_WORKSPACE/artifacts/ncnn
   #ncnn_install_root: ${HOME}/artifacts/ncnn/${ncnn_tag}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -56,10 +56,10 @@ jobs:
         run: |
           pwd
           ls -al
-          echo "!! ncnn_install_root is: ${ncnn_install_root}"
-          mkdir -p ${ncnn_install_root}
-          unzip ncnn-${ncnn_tag}-ubuntu-2004.zip -d $ncnn_install_root
-          tree -L 2 $ncnn_install_root
+          echo "!! ncnn_install_PATH is: ${ncnn_install_PATH}"
+          mkdir -p ${ncnn_install_PATH}
+          unzip ncnn-${ncnn_tag}-ubuntu-2004.zip -d $ncnn_install_PATH
+          tree -L 2 $ncnn_install_PATH
       
       - name: cmake configure
         run: cmake -DCMAKE_BUILD_TYPE=Release . -B build
