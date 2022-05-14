@@ -15,7 +15,8 @@ on:
 
 env:
   ncnn_tag: 20220420
-  ncnn_install_PATH: $GITHUB_WORKSPACE/artifacts/ncnn
+  ARTIFACTS_DIR: $GITHUB_WORKSPACE/artifacts
+  ncnn_install_PATH: $ARTIFACTS_DIR/ncnn
   # NOTE: seems only GITHUB_WORKSPACE is permitted, parent folders not permitted.
   #ncnn_install_PATH: $HOME/artifacts/ncnn/${ncnn_tag}
   #ncnn_install_PATH: $HOME/artifacts/ncnn
@@ -63,9 +64,10 @@ jobs:
           unzip ncnn-${ncnn_tag}-ubuntu-2004.zip -d $ncnn_install_PATH
           tree -L 2 $ncnn_install_PATH
           echo "!! HOME is $HOME"
-          echo "!! GITHUB_WORKSPACE is $GITHUB_WORKSPACE/artifacts"
-          tree -L 2 $HOME/artifacts
-          tree -L 2 /home/runner/artifacts
+          echo "!! GITHUB_WORKSPACE is $GITHUB_WORKSPACE"
+          echo "!! ARTIFACTS_DIR is $ARTIFACTS_DIR"
+          tree -L 2 $ARTIFACTS_DIR
+          tree -L 2 $ARTIFACTS_DIR/ncnn
       
       - name: cmake configure
         run: cmake -DCMAKE_BUILD_TYPE=Release . -B build
