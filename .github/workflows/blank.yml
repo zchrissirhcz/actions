@@ -48,9 +48,10 @@ jobs:
         run: |
           pwd
           ls -al
-          unzip ncnn-20220420-ubuntu-2004.zip -d $GITHUB_WORKSPACE/artifacts/ncnn
-          ls $GITHUB_WORKSPACE -al
-          tree $GITHUB_WORKSPACE
+          ncnn_install_root=$GITHUB_WORKSPACE/artifacts/ncnn
+          mkdir -p $ncnn_install_root
+          unzip ncnn-20220420-ubuntu-2004.zip -d $ncnn_install_root
+          tree -L 2 $ncnn_install_root
       
 
 #       - uses: dsaltares/fetch-gh-release-asset@master
