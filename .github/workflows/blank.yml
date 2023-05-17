@@ -33,11 +33,19 @@ jobs:
           url: "https://github.com/pffang/libiconv-for-Windows/releases/download/v1.16/libiconv-for-Windows_1.16.7z"
           target: .
 
+      - name: extract-7z-action
+        uses: DuckSoft/extract-7z-action@v1.0
+        with:
+          pathSource: libiconv-for-Windows_1.16.7z
+          pathTarget: jieyahou
+
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          - files: [ libiconv-for-Windows_1.16.7z ]
-          
+          name: libiconv-for-Windows_1.16.7z
+          path: jieyahou
+
+
 
       # - name: Download ncnn prebuilt package
       #   run: gh release download ${ncnn_tag} -p "*-ubuntu-2004.zip" -R tencent/ncnn
