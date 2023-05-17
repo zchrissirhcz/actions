@@ -19,13 +19,13 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v3
       
-      - name: List environment variables
-        run: env
+      # - name: List environment variables
+      #   run: env
       
-      - name: Print GH CLI version and grant auth
-        run: |
-          gh --version
-          echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+      # - name: Print GH CLI version and grant auth
+      #   run: |
+      #     gh --version
+      #     echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
         
       - name: Install libiconv (Windows)
         uses: suisei-cn/actions-download-file@v1
