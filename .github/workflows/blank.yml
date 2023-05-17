@@ -31,7 +31,13 @@ jobs:
         uses: suisei-cn/actions-download-file@v1
         with: 
           url: "https://github.com/pffang/libiconv-for-Windows/releases/download/v1.16/libiconv-for-Windows_1.16.7z"
-          target: .  
+          target: .
+
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: libiconv-for-Windows_1.16.7z
+          path: .
 
       # - name: Download ncnn prebuilt package
       #   run: gh release download ${ncnn_tag} -p "*-ubuntu-2004.zip" -R tencent/ncnn
