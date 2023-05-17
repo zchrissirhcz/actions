@@ -36,8 +36,8 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          name: libiconv-for-Windows_1.16.7z
-          path: libiconv-for-Windows_1.16.7z
+          - files: [ libiconv-for-Windows_1.16.7z ]
+          
 
       # - name: Download ncnn prebuilt package
       #   run: gh release download ${ncnn_tag} -p "*-ubuntu-2004.zip" -R tencent/ncnn
