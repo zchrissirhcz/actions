@@ -14,7 +14,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Clone repo
         uses: actions/checkout@v3
@@ -27,33 +27,39 @@ jobs:
           gh --version
           echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
         
-      - name: Download ncnn prebuilt package
-        run: gh release download ${ncnn_tag} -p "*-ubuntu-2004.zip" -R tencent/ncnn
-      
-      - name: Extract ncnn prebuilt package
-        run: |
-          pwd
-          ls -al
-          ncnn_tarball_head=ncnn-${ncnn_tag}-ubuntu-2004
-          ncnn_tarball_basename=${ncnn_tarball_head}.zip
-          ncnn_install_dir=$GITHUB_WORKSPACE/artifacts/ncnn
-          mkdir -p ${ncnn_install_dir}
-          unzip ${ncnn_tarball_basename} -d ${ncnn_install_dir}
-          
-      - name: Install Vulkan SDK
-        if: steps.cache-vulkan.outputs.cache-hit != 'true'
-        run:
-          sudo apt-get update && sudo apt-get install -y libvulkan-dev vulkan-utils
-     
-      - name: Setup Ninja
-        uses: seanmiddleditch/gha-setup-ninja@v3
-     
-      - name: CMake configure
-        run: cmake -GNinja -DCMAKE_BUILD_TYPE=Release . -B build
+      - name: Install libiconv (Windows)
+        uses: suisei-cn/actions-download-file@v1
+        with: 
+          url: "https://github.com/pffang/libiconv-for-Windows/releases/download/v1.16/libiconv-for-Windows_1.16.7z"
+          target: .  
 
-      - name: CMake build
-        run: cmake --build build
+      # - name: Download ncnn prebuilt package
+      #   run: gh release download ${ncnn_tag} -p "*-ubuntu-2004.zip" -R tencent/ncnn
+      
+      # - name: Extract ncnn prebuilt package
+      #   run: |
+      #     pwd
+      #     ls -al
+      #     ncnn_tarball_head=ncnn-${ncnn_tag}-ubuntu-2004
+      #     ncnn_tarball_basename=${ncnn_tarball_head}.zip
+      #     ncnn_install_dir=$GITHUB_WORKSPACE/artifacts/ncnn
+      #     mkdir -p ${ncnn_install_dir}
+      #     unzip ${ncnn_tarball_basename} -d ${ncnn_install_dir}
+          
+      # - name: Install Vulkan SDK
+      #   if: steps.cache-vulkan.outputs.cache-hit != 'true'
+      #   run:
+      #     sudo apt-get update && sudo apt-get install -y libvulkan-dev vulkan-utils
+     
+      # - name: Setup Ninja
+      #   uses: seanmiddleditch/gha-setup-ninja@v3
+     
+      # - name: CMake configure
+      #   run: cmake -GNinja -DCMAKE_BUILD_TYPE=Release . -B build
+
+      # - name: CMake build
+      #   run: cmake --build build
         
-      - name: Run test
-        run: ./testbed
-        working-directory: build
+      # - name: Run test
+      #   run: ./testbed
+      #   working-directory: build
