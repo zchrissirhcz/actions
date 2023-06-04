@@ -1,0 +1,107 @@
+name: CMake Build for Doxygen
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    permissions:
+      contents: write # to push pages branch (peaceiris/actions-gh-pages)
+
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+        - {
+            name: "Ubuntu Latest GCC Release",
+            os: ubuntu-20.04,
+            build_type: "Release", cc: "gcc", cxx: "g++",
+            build_gen: "Unix Makefiles",
+            cmake_extra_opts: "-Dbuild_search=YES -Dbuild_app=YES -Dbuild_parse=YES -Dbuild_xmlparser=YES -Duse_sqlite3=ON"
+          }
+        - {
+            name: "Ubuntu Latest GCC Debug",
+            os: ubuntu-20.04,
+            build_type: "Debug", cc: "gcc", cxx: "g++",
+            build_gen: "Unix Makefiles",
+            cmake_extra_opts: "-Dbuild_search=YES -Dbuild_app=YES -Dbuild_parse=YES -Dbuild_xmlparser=YES -Duse_sqlite3=ON"
+          }
+        - {
+            name: "Ubuntu Latest Clang Release",
+            os: ubuntu-20.04,
+            build_type: "Release", cc: "clang", cxx: "clang++",
+            build_gen: "Unix Makefiles",
+            cmake_extra_opts: "-Duse_libclang=YES -Dstatic_libclang=YES -Duse_libc++=NO -Duse_sqlite3=ON"
+          }
+        - {
+            name: "Ubuntu Latest Clang Debug",
+            os: ubuntu-20.04,
+            build_type: "Debug", cc: "clang", cxx: "clang++",
+            build_gen: "Unix Makefiles",
+            cmake_extra_opts: "-Duse_libclang=YES -Dstatic_libclang=YES -Duse_libc++=NO -Duse_sqlite3=ON"
+          }
+        - {
+            name: "macOS Latest Release",
+            os: macos-latest,
+            build_type: "Release", cc: "clang", cxx: "clang++",
+            build_gen: "Unix Makefiles"
+          }
+        - {
+            name: "macOS Latest Debug",
+            os: macos-latest,
+            build_type: "Debug", cc: "clang", cxx: "clang++",
+            build_gen: "Unix Makefiles"
+          }
+        - {
+            name: "Windows Latest MSVC Debug",
+            os: windows-latest,
+            build_type: "Debug", cc: "cl", cxx: "cl",
+            build_gen: "NMake Makefiles"
+          }
+        - {
+            name: "Windows Latest MSVC Release",
+            os: windows-latest,
+            build_type: "Release", cc: "cl", cxx: "cl",
+            build_gen: "NMake Makefiles"
+          }
+    steps:
+    - name: Checkout doxygen
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Install libiconv (Windows)
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: "https://github.com/pffang/libiconv-for-Windows/releases/download/v1.16/libiconv-for-Windows_1.16.7z"
+        target: .
+      if: matrix.config.os == 'windows-latest'
+
+    - name: Install LaTeX (Windows)
+      uses: teatimeguest/setup-texlive-action@v2
+      with:
+        packages: >-
+          scheme-medium
+          collection-latexextra
+          babel-dutch
+          cjk
+          bibtex
+      if: matrix.config.os == 'windows-latest'
+
+    - name: Install Ghostscript (Windows)
+      run:
+        choco install ghostscript
+      if: matrix.config.os == 'windows-latest'
+
+    - name: Setting Ghostscript paths (Windows)
+      shell: bash
+      run: |
+        export GSpath=`find /c/Prog*/gs -name gswin\*c.exe | sed -e "s/gswin.*c.exe//"`
+        export PATH="$GSpath:$PATH"
+        export GSpath=`echo "$GSpath" | sed -e "s%/c%C:%"`
+        echo "$GSpath" >> $GITHUB_PATH
+      if: matrix.config.os == 'windows-latest'
+
+    - name: Echo xmllint version
+      run: xmllint --version
