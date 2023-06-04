@@ -14,46 +14,6 @@ jobs:
       matrix:
         config:
         - {
-            name: "Ubuntu Latest GCC Release",
-            os: ubuntu-20.04,
-            build_type: "Release", cc: "gcc", cxx: "g++",
-            build_gen: "Unix Makefiles",
-            cmake_extra_opts: "-Dbuild_search=YES -Dbuild_app=YES -Dbuild_parse=YES -Dbuild_xmlparser=YES -Duse_sqlite3=ON"
-          }
-        - {
-            name: "Ubuntu Latest GCC Debug",
-            os: ubuntu-20.04,
-            build_type: "Debug", cc: "gcc", cxx: "g++",
-            build_gen: "Unix Makefiles",
-            cmake_extra_opts: "-Dbuild_search=YES -Dbuild_app=YES -Dbuild_parse=YES -Dbuild_xmlparser=YES -Duse_sqlite3=ON"
-          }
-        - {
-            name: "Ubuntu Latest Clang Release",
-            os: ubuntu-20.04,
-            build_type: "Release", cc: "clang", cxx: "clang++",
-            build_gen: "Unix Makefiles",
-            cmake_extra_opts: "-Duse_libclang=YES -Dstatic_libclang=YES -Duse_libc++=NO -Duse_sqlite3=ON"
-          }
-        - {
-            name: "Ubuntu Latest Clang Debug",
-            os: ubuntu-20.04,
-            build_type: "Debug", cc: "clang", cxx: "clang++",
-            build_gen: "Unix Makefiles",
-            cmake_extra_opts: "-Duse_libclang=YES -Dstatic_libclang=YES -Duse_libc++=NO -Duse_sqlite3=ON"
-          }
-        - {
-            name: "macOS Latest Release",
-            os: macos-latest,
-            build_type: "Release", cc: "clang", cxx: "clang++",
-            build_gen: "Unix Makefiles"
-          }
-        - {
-            name: "macOS Latest Debug",
-            os: macos-latest,
-            build_type: "Debug", cc: "clang", cxx: "clang++",
-            build_gen: "Unix Makefiles"
-          }
-        - {
             name: "Windows Latest MSVC Debug",
             os: windows-latest,
             build_type: "Debug", cc: "cl", cxx: "cl",
@@ -104,4 +64,5 @@ jobs:
       if: matrix.config.os == 'windows-latest'
 
     - name: Echo xmllint version
+      shell: bash
       run: xmllint --version
