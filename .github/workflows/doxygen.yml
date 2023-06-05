@@ -49,6 +49,10 @@ jobs:
           bibtex
       if: matrix.config.os == 'windows-latest'
 
+    - name: Echo xmllint version
+      shell: bash
+      run: xmllint --version
+
     - name: Install Ghostscript (Windows)
       run:
         choco install ghostscript
@@ -63,6 +67,9 @@ jobs:
         echo "$GSpath" >> $GITHUB_PATH
       if: matrix.config.os == 'windows-latest'
 
-    - name: Echo xmllint version
-      shell: bash
-      run: xmllint --version
+    # - name: Echo xmllint version
+    #   shell: bash
+    #   run: xmllint --version
+      # output:
+      # C:\Strawberry\c\bin\xmllint.exe: using libxml version 20909
+      # compiled with: Threads Tree Output Push Reader Patterns Writer SAXv1 FTP HTTP DTDValid HTML Legacy C14N Catalog XPath XPointer XInclude Iconv ISO8859X Unicode Regexps Automata Expr Schemas Schematron Modules Debug Zlib Lzma 
