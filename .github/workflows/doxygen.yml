@@ -26,7 +26,7 @@ jobs:
             build_gen: "NMake Makefiles"
           }
     steps:
-    - name: Checkout doxygen
+    - name: Checkout Repo
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
@@ -34,42 +34,6 @@ jobs:
     - name: Echo xmllint version
       shell: bash
       run: xmllint --version
-
-    - name: Install libiconv (Windows)
-      uses: suisei-cn/actions-download-file@v1
-      with:
-        url: "https://github.com/pffang/libiconv-for-Windows/releases/download/v1.16/libiconv-for-Windows_1.16.7z"
-        target: .
-      if: matrix.config.os == 'windows-latest'
-
-    - name: Install LaTeX (Windows)
-      uses: teatimeguest/setup-texlive-action@v2
-      with:
-        packages: >-
-          scheme-medium
-          collection-latexextra
-          babel-dutch
-          cjk
-          bibtex
-      if: matrix.config.os == 'windows-latest'
-
-    # - name: Echo xmllint version
-    #   shell: bash
-    #   run: xmllint --version
-
-    - name: Install Ghostscript (Windows)
-      run:
-        choco install ghostscript
-      if: matrix.config.os == 'windows-latest'
-
-    - name: Setting Ghostscript paths (Windows)
-      shell: bash
-      run: |
-        export GSpath=`find /c/Prog*/gs -name gswin\*c.exe | sed -e "s/gswin.*c.exe//"`
-        export PATH="$GSpath:$PATH"
-        export GSpath=`echo "$GSpath" | sed -e "s%/c%C:%"`
-        echo "$GSpath" >> $GITHUB_PATH
-      if: matrix.config.os == 'windows-latest'
 
     # - name: Echo xmllint version
     #   shell: bash
