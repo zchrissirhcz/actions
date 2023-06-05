@@ -31,6 +31,10 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Echo xmllint version
+      shell: bash
+      run: xmllint --version
+
     - name: Install libiconv (Windows)
       uses: suisei-cn/actions-download-file@v1
       with:
@@ -49,9 +53,9 @@ jobs:
           bibtex
       if: matrix.config.os == 'windows-latest'
 
-    - name: Echo xmllint version
-      shell: bash
-      run: xmllint --version
+    # - name: Echo xmllint version
+    #   shell: bash
+    #   run: xmllint --version
 
     - name: Install Ghostscript (Windows)
       run:
